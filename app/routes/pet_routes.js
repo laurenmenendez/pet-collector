@@ -74,12 +74,15 @@ router.post('/pets', requireToken, (req, res, next) => {
 
 // UPDATE
 // PATCH /examples/5a7db6c74d55bc51bdf39793
-router.patch('/pets/:id', requireToken, removeBlanks, (req, res, next) => {
+router.patch('/pets/', requireToken, removeBlanks, (req, res, next) => {
   // if the client attempts to change the `owner` property by including a new
   // owner, prevent that by deleting that key/value pair
   delete req.body.pet.owner
+  // store old name in variable
+  const oldName = req.body.pet.oldName
 
-  Pet.findById(req.params.id)
+  // allow user to find pet by name
+  Pet.findOne({ name: oldName })
     .then(handle404)
     .then(pet => {
       // pass the `req` object and the Mongoose record to `requireOwnership`
