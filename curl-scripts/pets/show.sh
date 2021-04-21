@@ -1,11 +1,12 @@
 #!/bin/sh
 
 API="http://localhost:4741"
-URL_PATH="/pets"
+URL_PATH="/pets/show"
 
 curl "${API}${URL_PATH}" \
   --include \
-  --request GET \
+  --request POST \
+  --header "Content-Type: application/json" \
   --header "Authorization: Bearer ${TOKEN}" \
   --data '{
       "pet": {

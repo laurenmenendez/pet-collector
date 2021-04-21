@@ -45,7 +45,7 @@ router.get('/pets', requireToken, (req, res, next) => {
 
 // SHOW
 // GET /examples/5a7db6c74d55bc51bdf39793
-router.get('/pets', requireToken, (req, res, next) => {
+router.post('/pets/show', requireToken, (req, res, next) => {
   // store pet name in variable
   const name = req.body.pet.name
 
