@@ -45,11 +45,13 @@ router.get('/pets', requireToken, (req, res, next) => {
 
 // SHOW
 // GET /examples/5a7db6c74d55bc51bdf39793
-router.get('/pets/:id', requireToken, (req, res, next) => {
-  // req.params.id will be set based on the `:id` in the route
-  Pet.findById(req.params.id)
+router.get('/pets', requireToken, (req, res, next) => {
+  // store pet name in variable
+  const name = req.body.pet.name
+
+  Pet.findOne({ name: name })
     .then(handle404)
-    // if `findById` is succesful, respond with 200 and "example" JSON
+    // if `findById` is succesful, respond with 200 and pet JSON
     .then(pet => res.status(200).json({ pet: pet.toObject() }))
     // if an error occurs, pass it to the handler
     .catch(next)
@@ -62,7 +64,7 @@ router.post('/pets', requireToken, (req, res, next) => {
   req.body.pet.owner = req.user.id
 
   Pet.create(req.body.pet)
-    // respond to succesful `create` with status 201 and JSON of new "example"
+    // respond to succesful `create` with status 201 and JSON of new pet
     .then(pet => {
       res.status(201).json({ pet: pet.toObject() })
     })
@@ -93,7 +95,7 @@ router.patch('/pets/', requireToken, removeBlanks, (req, res, next) => {
       pet.updateOne(req.body.pet)
       return pet.save()
     })
-    // if that succeeded, return 204 and no JSON
+    // if that succeeded, return 201 and JSON
     .then(pet => res.status(201).json({ pet: pet.toObject() }))
     // if an error occurs, pass it to the handler
     .catch(next)
