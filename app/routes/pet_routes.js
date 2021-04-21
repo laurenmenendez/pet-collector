@@ -30,7 +30,7 @@ const router = express.Router()
 // INDEX
 // GET /examples
 router.get('/pets', requireToken, (req, res, next) => {
-  Pet.find()
+  Pet.findById()
     .then(pets => {
       // `examples` will be an array of Mongoose documents
       // we want to convert each one to a POJO, so we use `.map` to
@@ -90,10 +90,11 @@ router.patch('/pets/', requireToken, removeBlanks, (req, res, next) => {
       requireOwnership(req, pet)
 
       // pass the result of Mongoose's `.update` to the next `.then`
-      return pet.updateOne(req.body.pet)
+      pet.updateOne(req.body.pet)
+      return pet.save()
     })
     // if that succeeded, return 204 and no JSON
-    .then(() => res.sendStatus(204))
+    .then(pet => res.status(201).json({ pet: pet.toObject() }))
     // if an error occurs, pass it to the handler
     .catch(next)
 })
