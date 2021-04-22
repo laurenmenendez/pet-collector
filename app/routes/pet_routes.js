@@ -98,9 +98,9 @@ router.patch('/pets/:id', requireToken, removeBlanks, (req, res, next) => {
 
 // DESTROY
 // DELETE /examples/5a7db6c74d55bc51bdf39793
-router.delete('/pets/:name', requireToken, (req, res, next) => {
-  const name = req.params.name
-  Pet.findOne({ name: name })
+router.delete('/pets/:id', requireToken, (req, res, next) => {
+  const id = req.params.id
+  Pet.findById(id)
     .then(handle404)
     .then(pet => {
       // throw an error if current user doesn't own `example`
