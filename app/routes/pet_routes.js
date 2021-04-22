@@ -30,7 +30,7 @@ const router = express.Router()
 // INDEX
 // GET /examples
 router.get('/pets', requireToken, (req, res, next) => {
-  Pet.findById()
+  Pet.find()
     .then(pets => {
       // `examples` will be an array of Mongoose documents
       // we want to convert each one to a POJO, so we use `.map` to
@@ -103,8 +103,9 @@ router.patch('/pets/', requireToken, removeBlanks, (req, res, next) => {
 
 // DESTROY
 // DELETE /examples/5a7db6c74d55bc51bdf39793
-router.delete('/pets/:id', requireToken, (req, res, next) => {
-  Pet.findById(req.params.id)
+router.delete('/pets/:name', requireToken, (req, res, next) => {
+  const name = req.params.name
+  Pet.findOne({ name: name })
     .then(handle404)
     .then(pet => {
       // throw an error if current user doesn't own `example`
