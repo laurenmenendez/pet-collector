@@ -62,7 +62,6 @@ router.post('/pets/show', requireToken, (req, res, next) => {
 router.post('/pets', requireToken, (req, res, next) => {
   // set owner of new example to be current user
   req.body.pet.owner = req.user.id
-
   Pet.create(req.body.pet)
     // respond to succesful `create` with status 201 and JSON of new pet
     .then(pet => {
@@ -76,24 +75,20 @@ router.post('/pets', requireToken, (req, res, next) => {
 
 // UPDATE
 // PATCH /examples/5a7db6c74d55bc51bdf39793
-router.patch('/pets/', requireToken, removeBlanks, (req, res, next) => {
+router.patch('/pets/:id', requireToken, removeBlanks, (req, res, next) => {
   // if the client attempts to change the `owner` property by including a new
   // owner, prevent that by deleting that key/value pair
   delete req.body.pet.owner
   // store old name in variable
-  const oldName = req.body.pet.oldName
+  const id = req.params.id
 
   // allow user to find pet by name
-  Pet.findOne({ name: oldName })
+  Pet.findOneAndUpdate({ _id: id }, req.body.pet)
     .then(handle404)
     .then(pet => {
       // pass the `req` object and the Mongoose record to `requireOwnership`
       // it will throw an error if the current user isn't the owner
-      requireOwnership(req, pet)
-
-      // pass the result of Mongoose's `.update` to the next `.then`
-      pet.updateOne(req.body.pet)
-      return pet.save()
+      return requireOwnership(req, pet)
     })
     // if that succeeded, return 201 and JSON
     .then(pet => res.status(201).json({ pet: pet.toObject() }))
