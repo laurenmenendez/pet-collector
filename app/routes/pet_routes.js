@@ -83,11 +83,12 @@ router.patch('/pets/:id', requireToken, removeBlanks, (req, res, next) => {
   const id = req.params.id
 
   // allow user to find pet by name
-  Pet.findOneAndUpdate({ _id: id }, req.body.pet)
+  Pet.findOneAndUpdate({ _id: id }, req.body.pet, { new: true })
     .then(handle404)
     .then(pet => {
       // pass the `req` object and the Mongoose record to `requireOwnership`
       // it will throw an error if the current user isn't the owner
+      console.log(pet)
       return requireOwnership(req, pet)
     })
     // if that succeeded, return 201 and JSON
