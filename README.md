@@ -7,4 +7,4 @@ The Pet Collector API manages the database of user pets. Handles GET, POST, PATC
 https://tranquil-scrubland-68284.herokuapp.com
 
 ## ERD
-![ERD]![](https://github.com/laurenmenendez/pet-collector/blob/main/IMG_4049.jpg)
+![](https://github.com/laurenmenendez/pet-collector/blob/main/IMG_4049.jpg)
