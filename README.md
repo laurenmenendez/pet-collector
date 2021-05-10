@@ -1,4 +1,6 @@
 # Pet Collector
+
+## About
 The Pet Collector API manages the database of user pets. Handles GET, POST, PATCH, and DELETE requests initiated on the front end app using Express and Mongoose/MongoDb.
 
 ## Deployment Link
